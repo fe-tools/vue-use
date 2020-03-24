@@ -1,48 +1,18 @@
 import { ref, Ref } from '@vue/composition-api'
+import { parse, ParseOptions } from 'query-string'
 
-type Url = URL | Location
-type Query = { [params: string]: string }
-type Cache = { [url: string]: Query }
+type QueryResult<T = string> = Ref<T> | Ref<T[]> | Ref<''>
 
-export const cache: Cache = {}
+export function useURLQuery (query: string, config?: ParseOptions): QueryResult
+export function useURLQuery (query: string[], config?: ParseOptions): QueryResult[]
+export function useURLQuery (query: any, config?: ParseOptions): any {
+  const url:Location = window.location
 
-function getURLParams (url: Url): Query {
-  const urlString = url.toString()
+  const result = parse(url.search, config)
 
-  if (cache[urlString] !== undefined) {
-    return cache[urlString]
-  }
-
-  const query: Query = {}
-  const search = url.search
-  const args = decodeURIComponent(search).slice(1).split('&')
-  args.forEach(item => {
-    const a = item.split('=')
-    query[a[0]] = a[1]
-  })
-  cache[urlString] = query
-
-  return query
-}
-
-export function useURLQuery (key: string, urlString?: string): Ref<string>
-export function useURLQuery (arg: string[], urlString?: string): Ref<string>[]
-export function useURLQuery (params: any, urlString?: string) {
-  let url: Url = window.location
-
-  if (urlString !== undefined) {
-    try {
-      url = new URL(urlString)
-    } catch(err) {
-      throw `useURLQuery Error: Invalid URL '${ urlString }'`
-    }
-  }
-
-  const query = getURLParams(url)
-
-  if (Array.isArray(params)) {
-    return params.map(item => ref(query[item] ?? ''))
+  if (Array.isArray(query)) {
+    return query.map(key => ref(result[key] ?? ''))
   } else {
-    return ref(query[params] ?? '')
+    return ref(result[query] ?? '')
   }
 }

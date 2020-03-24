@@ -1,11 +1,6 @@
 import { Ref } from '@vue/composition-api';
-declare type Query = {
-    [params: string]: string;
-};
-declare type Cache = {
-    [url: string]: Query;
-};
-export declare const cache: Cache;
-export declare function useURLQuery(key: string, urlString?: string): Ref<string>;
-export declare function useURLQuery(arg: string[], urlString?: string): Ref<string>[];
+import { ParseOptions } from 'query-string';
+declare type QueryResult<T = string> = Ref<T> | Ref<T[]> | Ref<''>;
+export declare function useURLQuery(query: string, config?: ParseOptions): QueryResult;
+export declare function useURLQuery(query: string[], config?: ParseOptions): QueryResult[];
 export {};

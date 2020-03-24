@@ -1,8 +1,9 @@
 {
-  "name": "vue-use",
+  "name": "@fe-tools/vue-use",
   "version": "0.0.1",
   "description": "vue hooks",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "typings": "types/index.d.ts",
   "scripts": {
     "prebuild": "rimraf lib types",
     "build": "rollup -c",
@@ -13,6 +14,7 @@
   "peerDependencies": {},
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.1",
     "@vue/composition-api": "^0.4.0",
@@ -26,5 +28,8 @@
     "typescript": "^3.8.3",
     "vue": "^2.6.11",
     "vue-template-compiler": "^2.6.11"
+  },
+  "dependencies": {
+    "query-string": "5.1.1"
   }
 }
