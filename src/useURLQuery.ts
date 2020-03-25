@@ -8,7 +8,10 @@ export function useURLQuery (query: string[], config?: ParseOptions): QueryResul
 export function useURLQuery (query: any, config?: ParseOptions): any {
   const url:Location = window.location
 
-  const result = parse(url.search, config)
+  const result = parse(url.search, {
+    arrayFormat: 'index',
+    ...config
+  })
 
   if (Array.isArray(query)) {
     return query.map(key => ref(result[key] ?? ''))

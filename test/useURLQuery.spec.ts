@@ -29,5 +29,17 @@ describe('useURLQuery', () => {
     const [ilike, id] = useURLQuery(['ilike', 'id'])
     expect(ilike.value).toBe('pizz')
     expect(id.value).toBe('2333')
+
+    setURLQueryString('?foo[]=1&foo[]=2&foo[]=3')
+    const foo1 = useURLQuery('foo', { arrayFormat: 'bracket' })
+    expect(foo1.value).toEqual(['1', '2', '3'])
+
+    setURLQueryString('?foo=1&foo=2&foo=3')
+    const foo2 = useURLQuery('foo', { arrayFormat: 'none' })
+    expect(foo2.value).toEqual(['1', '2', '3'])
+
+    setURLQueryString('?foo=1&foo=2&foo=3')
+    const foo3 = useURLQuery('foo')
+    expect(foo3.value).toEqual('3')
   })
 })
