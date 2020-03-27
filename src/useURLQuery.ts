@@ -3,18 +3,19 @@ import { parse, ParseOptions } from 'query-string'
 
 type QueryResult<T = string> = Ref<T> | Ref<T[]> | Ref<''>
 
-export function useURLQuery (query: string, config?: ParseOptions): QueryResult
-export function useURLQuery (query: string[], config?: ParseOptions): QueryResult[]
-export function useURLQuery (query: any, config?: ParseOptions): any {
-  const url:Location = window.location
+export function useURLQuery(query: string, config?: ParseOptions): QueryResult
+export function useURLQuery(query: string[], config?: ParseOptions): QueryResult[]
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useURLQuery(query: any, config?: ParseOptions): any {
+  const url: Location = window.location
 
   const result = parse(url.search, {
     arrayFormat: 'index',
-    ...config
+    ...config,
   })
 
   if (Array.isArray(query)) {
-    return query.map(key => ref(result[key] ?? ''))
+    return query.map((key) => ref(result[key] ?? ''))
   } else {
     return ref(result[query] ?? '')
   }
